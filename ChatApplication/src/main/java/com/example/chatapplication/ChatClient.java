@@ -7,7 +7,7 @@ import javax.crypto.spec.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-public class Client {
+public class ChatClient {
     private static final String SERVER_HOST = "localhost";
     private static final int SERVER_PORT = 12345;
 
@@ -63,5 +63,6 @@ public class Client {
         return new String(cipher.doFinal(decoded), StandardCharsets.UTF_8);
     }
 }
+
 
 
