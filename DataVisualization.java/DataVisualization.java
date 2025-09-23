@@ -9,9 +9,9 @@ public class DataVisualization {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("=== Console Data Visualization Tool ===");
+        System.out.println("Console Data Visualization Tool");
 
-        // 1. Load CSV
+        //Loading CSV FIle
         System.out.print("Enter CSV file path: ");
         String filePath = sc.nextLine();
         try {
@@ -21,12 +21,12 @@ public class DataVisualization {
             return;
         }
 
-        // Menu loop
+        //Loop of the Menu
         while (true) {
             System.out.println("\nMenu:");
             System.out.println("1. Show columns");
-            System.out.println("2. Display column histogram");
-            System.out.println("3. Display column bar chart");
+            System.out.println("2. Display histogram");
+            System.out.println("3. Display bar chart");
             System.out.println("4. Exit");
             System.out.print("Choose an option: ");
             String choice = sc.nextLine();
@@ -37,13 +37,13 @@ public class DataVisualization {
                     break;
                 case "2":
                     System.out.print("Enter column name: ");
-                    String col1 = sc.nextLine();
-                    displayHistogram(col1);
+                    String column1 = sc.nextLine();
+                    displayHistogram(column1);
                     break;
                 case "3":
                     System.out.print("Enter column name: ");
-                    String col2 = sc.nextLine();
-                    displayBarChart(col2);
+                    String column2 = sc.nextLine();
+                    displayBarChart(column2);
                     break;
                 case "4":
                     System.out.println("Exiting...");
@@ -54,7 +54,7 @@ public class DataVisualization {
         }
     }
 
-    // Load CSV into list of maps
+    //Load CSV into list of maps
     private static void loadCSV(String filePath) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(filePath));
         String line = br.readLine();
@@ -72,7 +72,7 @@ public class DataVisualization {
         System.out.println("CSV loaded successfully! Rows: " + data.size());
     }
 
-    // Show all columns
+    //Show all columns
     private static void showColumns() {
         System.out.println("Columns in dataset:");
         for (String col : columns) {
@@ -95,14 +95,14 @@ public class DataVisualization {
         freq.forEach((k,v) -> System.out.println(k + " : " + "*".repeat(Math.toIntExact(v))));
     }
 
-    // Display simple numeric bar chart
+    //Display simple numeric bar chart
     private static void displayBarChart(String column) {
         if (!columns.contains(column)) {
             System.out.println("Column not found.");
             return;
         }
 
-        // parse numeric values
+        //parse numeric values
         List<Double> nums = new ArrayList<>();
         for (Map<String, String> row : data) {
             try {
@@ -123,4 +123,5 @@ public class DataVisualization {
         }
     }
 }
+
 
