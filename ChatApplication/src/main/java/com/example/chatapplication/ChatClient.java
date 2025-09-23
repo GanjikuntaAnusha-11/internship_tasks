@@ -25,7 +25,7 @@ public class ChatClient {
                     String input1;
                     while ((input1 = in.readLine()) != null) {
                         try {
-                            String toDecrypt = decrypt(line);
+                            String toDecrypt = decryption(line);
                             System.out.println(toDecrypt);
                         } catch (Exception e) {
                             // initial prompts are plain text
@@ -63,6 +63,7 @@ public class ChatClient {
         return new String(cipher.doFinal(decoded), StandardCharsets.UTF_8);
     }
 }
+
 
 
 
