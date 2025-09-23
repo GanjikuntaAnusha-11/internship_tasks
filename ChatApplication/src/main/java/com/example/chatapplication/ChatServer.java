@@ -22,10 +22,10 @@ public class ChatServer {
 
     public static void main(String[] args) {
         System.out.println("Chat server started on port " + PORT);
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+        try (ServerSocket serverSoc1 = new ServerSocket(PORT)) {
             while (true) {
-                Socket socket = serverSocket.accept();
-                new Thread(new ClientHandler(socket)).start();
+                Socket soc1 = serverSoc1.accept();
+                new Thread(new ClientHandler(soc1)).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,13 +33,13 @@ public class ChatServer {
     }
 
     static class ClientHandler implements Runnable {
-            private Socket socket;
-            private PrintWriter out;
-            private BufferedReader in;
+            private Socket soc2;
+            private PrintWriter output;
+            private BufferedReader input;
             private String username;
 
             ClientHandler(Socket socket) {
-                this.socket = socket;
+                this.soc2 = socket;
             }
 
             @Override
@@ -56,7 +56,7 @@ public class ChatServer {
 
                     if (!USERS.containsKey(user) || !USERS.get(user).equals(pass)) {
                         out.println("Authentication failed.");
-                        socket.close();
+                        soc2.close();
                         return;
                     }
 
@@ -66,8 +66,8 @@ public class ChatServer {
 
                     String line;
                     while ((line = in.readLine()) != null) {
-                        String decrypted = decrypt(line);
-                        broadcast(username + ": " + decrypted);
+                        String toDecrpyt = decryption(line);
+                        broadcast(username + ": " + toDecrypt);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -80,9 +80,9 @@ public class ChatServer {
                 }
             }
 
-            void sendMessage(String msg) {
+            void sendMessage(String message) {
                 try {
-                    out.println(encrypt(msg));
+                    out.println(encryption(message));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -97,13 +97,13 @@ public class ChatServer {
         }
 
         // AES encrypt/decrypt
-        private static String encrypt(String plain) throws Exception {
+        private static String encryption(String plain) throws Exception {
             Cipher cipher = Cipher.getInstance("AES");
             SecretKeySpec skey = new SecretKeySpec(KEY, "AES");
             cipher.init(Cipher.ENCRYPT_MODE, skey);
             return Base64.getEncoder().encodeToString(cipher.doFinal(plain.getBytes(StandardCharsets.UTF_8)));
         }
-        private static String decrypt(String enc) throws Exception {
+        private static String decryption(String enc) throws Exception {
             Cipher cipher = Cipher.getInstance("AES");
             SecretKeySpec skey = new SecretKeySpec(KEY, "AES");
             cipher.init(Cipher.DECRYPT_MODE, skey);
@@ -111,4 +111,5 @@ public class ChatServer {
             return new String(cipher.doFinal(decoded), StandardCharsets.UTF_8);
         }
 }
+
 
